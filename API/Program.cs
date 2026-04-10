@@ -1,5 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
+using DatingApp.API.Interfaces;
+using DatingApp.API.Services;
 
 namespace API
 {
@@ -24,6 +26,8 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
+
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             var app = builder.Build();
 
