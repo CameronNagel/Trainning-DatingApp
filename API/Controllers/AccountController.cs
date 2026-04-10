@@ -3,6 +3,7 @@ using System.Text;
 using API.Data;
 using API.Entities;
 using DatingApp.API.DTOs;
+using DatingApp.API.Extentions;
 using DatingApp.API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,13 +35,8 @@ namespace DatingApp.API.Controllers
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            return new UserDto
-            {
-                Id = user.Id,
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user)
-            };
+            return user.ToDto(_tokenService);
+        
         }
 
         [HttpPost("login")] //api/account/login
@@ -59,13 +55,7 @@ namespace DatingApp.API.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
 
-            return new UserDto
-            {
-                Id = user.Id,
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user)
-            };
+            return user.ToDto(_tokenService);
         }
 
         private async Task<bool> UserExists(string email)
