@@ -26,11 +26,7 @@ export class Nav {
         this.creds = {}
       },
       error: error => {
-        const detail =
-          error?.error?.message ||
-          (typeof error?.error === 'string' ? error.error : null) ||
-          'Login failed. Please check your credentials and try again.';
-        this.toastService.showErrorToast(detail);
+        this.toastService.showErrorToast('Login failed. Please check your credentials and try again.');
       },
       complete: () => console.log('Login request completed')
     })
@@ -38,6 +34,7 @@ export class Nav {
 
   logout(){
     this.router.navigateByUrl('/');
+    this.toastService.showInfoToast('Logged out successfully.');
     this.accountService.logout();
   }
 
