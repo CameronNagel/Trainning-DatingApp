@@ -1,4 +1,11 @@
 <app-nav />
+<p-toast position="top-right" />
 
-<app-home/>
+<div 
+    [class.mt-24]="router.url !== '/'"
+    [class.container]="router.url !== '/'"
+    [class.mx-auto]="router.url !== '/'">
+    <router-outlet />
+
+</div>
 

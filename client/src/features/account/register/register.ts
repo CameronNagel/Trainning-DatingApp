@@ -17,7 +17,9 @@ export class Register {
   register(){
     this.accountService.register(this.creds).subscribe({
       next: response => {
-        console.log(response);  },
+        console.log(response); 
+         
+      },
       error: error => console.log(error)
     })
 
