@@ -1,6 +1,9 @@
 ﻿using API.Data;
 using API.Entities;
 using DatingApp.API.Controllers;
+using DatingApp.API.DTOs;
+using DatingApp.API.Extentions;
+using DatingApp.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +12,16 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     
-    public class MembersController(AppDbContext context) : BaseApiController
+    public class MembersController(AppDbContext context, ITokenService tokenService) : BaseApiController
     {
+        private readonly ITokenService _tokenService = tokenService;
+
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
+        public async Task<ActionResult<IReadOnlyList<UserDto>>> GetMembers()
         {
-            var members = await context.Users.ToListAsync();
-            return members;
+            var users = await context.Users.ToListAsync();
+            return users.Select(user => user.ToDto(_tokenService)).ToList();
+          
         }
 
         [Authorize]
